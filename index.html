@@ -106,7 +106,7 @@ input[type=text]:focus,textarea:focus{border-color:var(--accent);background:var(
 .file img{width:1.6rem;height:2rem;flex:none}
 .file .nm{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;font-size:.8rem;font-weight:600}
 .file .sz{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);white-space:nowrap}
-#paper a.att{display:inline-flex;flex-direction:column;align-items:center;gap:2px;width:96px;margin:4px 10px 6px 0;vertical-align:top;text-align:center;text-decoration:none;color:#1F3864;font-size:8.5pt;line-height:1.2;cursor:pointer}
+#paper a.att{display:inline-flex;flex-direction:column;align-items:center;gap:2px;width:96px;margin:4px 10px 6px 0;vertical-align:top;text-align:center;text-decoration:none;color:#000000;font-size:8.5pt;line-height:1.2;cursor:pointer}
 #paper a.att img{display:block;width:40px;height:50px}
 #paper a.att span{overflow-wrap:anywhere}
 .presets{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
@@ -124,7 +124,7 @@ input[type=text]:focus,textarea:focus{border-color:var(--accent);background:var(
 #paper img{max-width:100%;height:auto;display:block}
 #paper table{max-width:100%}
 #paper td{word-break:break-word}
-.empty-note{color:#8a94a1;font-style:italic;margin:0 0 8pt}
+.empty-note{color:#000000;font-style:italic;margin:0 0 8pt}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);
   padding:.5rem .9rem;border-radius:8px;font-size:.82rem;font-weight:600;z-index:40;max-width:min(92vw,28rem);opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.show{opacity:1}
@@ -288,9 +288,9 @@ function renderEditor(){
 }
 
 /* ---------- report (preview + export) ---------- */
-var BLUE='#2F5F9E',NAVY='#1F3864',BORDER='1px solid #7f8a99';
+var BLUE='#2F5F9E',NAVY='#000000',BORDER='1px solid #7f8a99';
 var CELL='border:'+BORDER.replace('1px solid','1px solid')+';padding:5pt 6pt;vertical-align:top;';
-function imgTag(im,w,alt){var ww=Math.min(w,im.w),hh=Math.round(ww*im.h/im.w);return '<p style="margin:0 0 3pt"><img src="'+im.src+'" width="'+ww+'" height="'+hh+'" alt="'+esc(alt)+'"></p>'+(im.c?'<p style="margin:0 0 6pt;font-size:9pt;color:#555555;font-style:italic">'+esc(im.c)+'</p>':'')}
+function imgTag(im,w,alt){var ww=Math.min(w,im.w),hh=Math.round(ww*im.h/im.w);return '<p style="margin:0 0 3pt"><img src="'+im.src+'" width="'+ww+'" height="'+hh+'" alt="'+esc(alt)+'"></p>'+(im.c?'<p style="margin:0 0 6pt;font-size:9pt;color:#000000;font-style:italic">'+esc(im.c)+'</p>':'')}
 var attMode='preview',attNames=null,pf=[];
 function prepAtt(){attNames=new Map();var used={};allItems().forEach(function(it){(it.files||[]).forEach(function(f){
   var n=f.name,c=1;while(used[n.toLowerCase()]){c++;n=f.name.replace(/(\.[^.]*)?$/,' ('+c+')$1')}used[n.toLowerCase()]=1;attNames.set(f,n)})})}
@@ -298,7 +298,7 @@ function attHTML(f){
   var nm=(attNames&&attNames.get(f))||f.name,ic=iconURL(f.name);
   if(attMode==='preview'){pf.push(f);return '<a class="att" href="#" data-att="'+(pf.length-1)+'" title="Click to download '+esc(nm)+'"><img src="'+ic+'" width="40" height="50" alt=""><span>'+esc(nm)+'</span></a>'}
   var href=attMode==='html'?f.src:'Attachments/'+encodeURI(nm);
-  return '<p style="margin:3pt 0 6pt"><a href="'+href+'"'+(attMode==='html'?' download="'+esc(nm)+'"':'')+' style="text-decoration:none;color:#1F3864"><img src="'+ic+'" width="34" height="42" alt="" style="vertical-align:middle"> <span style="font-size:10pt;color:#1F3864">'+esc(nm)+'</span></a></p>';
+  return '<p style="margin:3pt 0 6pt"><a href="'+href+'"'+(attMode==='html'?' download="'+esc(nm)+'"':'')+' style="text-decoration:none;color:#000000"><img src="'+ic+'" width="34" height="42" alt="" style="vertical-align:middle"> <span style="font-size:10pt;color:#000000">'+esc(nm)+'</span></a></p>';
 }
 function dashReport(items,w){
   return items.filter(function(it){return it.imgs.length||(it.files||[]).length||it.n.trim()}).map(function(it){
@@ -313,7 +313,7 @@ function reportHTML(preview){
   var h='<table style="width:100%;border-collapse:collapse;margin:0 0 12pt 0">'+S.details.map(function(d){
     return '<tr><td style="'+CELL+'width:28%;background:'+BLUE+';color:#ffffff;font-weight:bold">'+esc(d.l)+'</td><td style="'+CELL+'">'+(esc(d.v)||'&nbsp;')+'</td></tr>'}).join('')+'</table>';
   S.sections.forEach(function(s,si){
-    h+='<p style="margin:14pt 0 6pt;font-size:12pt;font-weight:bold;color:#2F5496">'+String.fromCharCode(65+si)+'. '+esc(s.t)+'</p>';
+    h+='<p style="margin:14pt 0 6pt;font-size:12pt;font-weight:bold;color:#000000">'+String.fromCharCode(65+si)+'. '+esc(s.t)+'</p>';
     if(s.k==='dash'){
       var d=dashReport(s.items,620);
       h+=d||(preview?'<p class="empty-note">No screenshots or notes yet.</p>':'');
@@ -519,11 +519,11 @@ function buildDocx(){
     zf('word/media/image'+n+'.jpg',dataBytes(im.src));r=addRel(REL+'image','media/image'+n+'.jpg');dp++;
     return '<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+cx+'" cy="'+cy+'"/><wp:docPr id="'+dp+'" name="Picture '+dp+'" descr="'+xe(alt)+'"/><wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="'+dp+'" name="image'+n+'.jpg"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="'+r+'"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+cx+'" cy="'+cy+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>'}
   function filePara(f){
-    var nm=attNames.get(f)||f.name,e=extOf(f.name),bytes=dataBytes(f.src),nat=NATIVE[e],target,relType,prog,label=wr('  '+nm,{c:'1F3864',sz:20});
+    var nm=attNames.get(f)||f.name,e=extOf(f.name),bytes=dataBytes(f.src),nat=NATIVE[e],target,relType,prog,label=wr('  '+nm,{c:'000000',sz:20});
     if(nat){embN++;target='embeddings/Embedded'+embN+'.'+e;zf('word/'+target,bytes);relType=REL+'package';prog=nat[0];types[e]=nat[1]}
     else{
       var cf=bytes.length<=EMBED_MAX?cfb([{name:'\u0001CompObj',data:compObj()},{name:'\u0001Ole10Native',data:ole10(nm,bytes)}]):null;
-      if(!cf){lastLinked++;var hr=addRel(REL+'hyperlink','Attachments/'+encodeURI(nm),true);return wp('<w:hyperlink r:id="'+hr+'">'+wr(nm+' (see Attachments folder)',{c:'1F3864',u:1,sz:20})+'</w:hyperlink>',{bf:60,af:120})}
+      if(!cf){lastLinked++;var hr=addRel(REL+'hyperlink','Attachments/'+encodeURI(nm),true);return wp('<w:hyperlink r:id="'+hr+'">'+wr(nm+' (see Attachments folder)',{c:'000000',u:1,sz:20})+'</w:hyperlink>',{bf:60,af:120})}
       embN++;target='embeddings/oleObject'+embN+'.bin';zf('word/'+target,cf);relType=REL+'oleObject';prog='Package';types.bin='application/vnd.openxmlformats-officedocument.oleObject';
     }
     var er=addRel(relType,target),sid='_x0000_i'+(1024+(++shp));
@@ -532,8 +532,8 @@ function buildDocx(){
   }
   function dashX(items,maxPx){
     return items.filter(function(it){return it.imgs.length||(it.files||[]).length||it.n.trim()}).map(function(it){
-      return wp(wr(it.t||'Dashboard',{b:1,c:'1F3864',sz:22}),{bf:180,af:60,keep:1})+
-        it.imgs.map(function(im){return wp(pic(im,maxPx,it.t),{af:40})+(im.c?wp(wr(im.c,{i:1,c:'555555',sz:18}),{af:120}):'')}).join('')+
+      return wp(wr(it.t||'Dashboard',{b:1,c:'000000',sz:22}),{bf:180,af:60,keep:1})+
+        it.imgs.map(function(im){return wp(pic(im,maxPx,it.t),{af:40})+(im.c?wp(wr(im.c,{i:1,c:'000000',sz:18}),{af:120}):'')}).join('')+
         (it.files||[]).map(filePara).join('')+
         (it.n.trim()?wp(wr(it.n),{bf:40,af:120}):'');
     }).join('');
@@ -541,7 +541,7 @@ function buildDocx(){
   var body='',lw=Math.round(W*.28);
   body+=wt([lw,W-lw],S.details.map(function(d){return [{xml:wp(wr(d.l,{b:1,c:'FFFFFF'})),fill:'2F5F9E'},{xml:wp(wr(d.v))}]}));
   S.sections.forEach(function(s,si){
-    body+=wp(wr(String.fromCharCode(65+si)+'. '+s.t,{b:1,c:'2F5496',sz:24}),{bf:280,af:120,keep:1});
+    body+=wp(wr(String.fromCharCode(65+si)+'. '+s.t,{b:1,c:'000000',sz:24}),{bf:280,af:120,keep:1});
     if(s.k==='dash'){body+=dashX(s.items,620)}
     else if(s.k==='obj'){
       var a=Math.round(W*.26),rows=[[{xml:wp(wr('Objectives/Priorities',{b:1,c:'FFFFFF'})),fill:'2F5F9E'},{xml:wp(wr('Current Updates',{b:1,c:'FFFFFF'})),fill:'2F5F9E'}]];
